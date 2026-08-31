@@ -21,7 +21,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         header h1 {
@@ -38,6 +38,61 @@
             font-size: 1.1rem;
         }
 
+        /* Khu vực đăng hình (Upload Section) */
+        .upload-section {
+            background-color: #1f2937;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 2px dashed #374151;
+            text-align: center;
+        }
+
+        .upload-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #f3f4f6;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .upload-form input[type="text"],
+        .upload-form input[type="file"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4b5563;
+            background-color: #111827;
+            color: #f3f4f6;
+            font-size: 0.95rem;
+        }
+
+        .upload-form input[type="file"] {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #059669;
+        }
+
+        /* Lưới hiển thị hình nền */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -50,7 +105,7 @@
             background-color: #1f2937;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             position: relative;
@@ -79,6 +134,10 @@
             font-size: 0.95rem;
             font-weight: 500;
             color: #e5e7eb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
         }
 
         .download-btn {
@@ -138,8 +197,16 @@
         <p>Tuyển tập hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
     </header>
 
-    <div class="gallery" id="gallery">
-        </div>
+    <div class="upload-section">
+        <h3>Chia sẻ hình nền mới của bạn</h3>
+        <form class="upload-form" id="uploadForm">
+            <input type="text" id="imageTitle" placeholder="Nhập tên hình nền..." required>
+            <input type="file" id="imageFile" accept="image/*" required>
+            <button type="submit" class="submit-btn">Đăng lên kho lưu trữ</button>
+        </form>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
 
     <div class="modal" id="imageModal">
         <span class="close-modal" id="closeModal">&times;</span>
@@ -147,7 +214,7 @@
     </div>
 
     <script>
-        // Danh sách 10 hình nền (sử dụng các ảnh phong cảnh/aesthetic từ Unsplash tối ưu cho iPad)
+        // Danh sách hình nền ban đầu
         const wallpapers = [
             { title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" },
             { title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" },
@@ -165,27 +232,62 @@
         const modalEl = document.getElementById('imageModal');
         const modalImgEl = document.getElementById('modalImg');
         const closeModalEl = document.getElementById('closeModal');
+        const uploadForm = document.getElementById('uploadForm');
 
-        // Render danh sách hình nền ra giao diện
-        wallpapers.forEach((wp, index) => {
-            const card = document.createElement('div');
-            card.className = 'wallpaper-card';
-            
-            card.innerHTML = `
-                <img src="${wp.url}" alt="${wp.title}" loading="lazy">
-                <div class="wallpaper-info">
-                    <span class="wallpaper-title">${wp.title}</span>
-                    <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
-                </div>
-            `;
+        // Hàm vẽ danh sách hình nền lên giao diện
+        function renderGallery() {
+            galleryEl.innerHTML = '';
+            wallpapers.forEach((wp) => {
+                const card = document.createElement('div');
+                card.className = 'wallpaper-card';
+                
+                card.innerHTML = `
+                    <img src="${wp.url}" alt="${wp.title}" loading="lazy">
+                    <div class="wallpaper-info">
+                        <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
+                        <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                    </div>
+                `;
 
-            // Bấm vào thẻ để phóng to ảnh
-            card.addEventListener('click', () => {
-                modalImgEl.src = wp.url;
-                modalEl.style.display = 'flex';
+                // Bấm vào thẻ để phóng to ảnh
+                card.addEventListener('click', () => {
+                    modalImgEl.src = wp.url;
+                    modalEl.style.display = 'flex';
+                });
+
+                galleryEl.appendChild(card);
             });
+        }
 
-            galleryEl.appendChild(card);
+        // Chạy lần đầu tiên
+        renderGallery();
+
+        // Xử lý sự kiện khi người dùng nhấn nút "Đăng lên kho lưu trữ"
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const titleInput = document.getElementById('imageTitle');
+            const fileInput = document.getElementById('imageFile');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Thêm ảnh mới vào mảng dữ liệu đầu danh sách (unshift)
+                    wallpapers.unshift({
+                        title: titleInput.value,
+                        url: e.target.result // Chuyển file ảnh thành chuỗi Base64 để hiển thị ngay lập tức
+                    });
+
+                    // Cập nhật lại giao diện
+                    renderGallery();
+
+                    // Reset form sau khi đăng thành công
+                    uploadForm.reset();
+                }
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
         });
 
         // Đóng modal
