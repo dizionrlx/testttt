@@ -42,7 +42,7 @@
         .upload-section {
             background-color: #1f2937;
             max-width: 600px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 30px auto;
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -92,6 +92,31 @@
             background-color: #059669;
         }
 
+        /* Nút chuyển tab (Mới nhất / Nhiều yêu thích nhất) */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            background-color: #1f2937;
+            color: #9ca3af;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
         /* Lưới hiển thị hình nền */
         .gallery {
             display: grid;
@@ -137,7 +162,30 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 160px;
+            max-width: 120px;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: transform 0.1s;
+        }
+
+        .like-btn:active {
+            transform: scale(1.2);
         }
 
         .download-btn {
@@ -201,9 +249,14 @@
         <h3>Chia sẻ hình nền mới của bạn</h3>
         <form class="upload-form" id="uploadForm">
             <input type="text" id="imageTitle" placeholder="Nhập tên hình nền..." required>
-            <input type="file" id="imageFile" accept="image/*" required>
+            <input type="file" id="imageFile" accept="image/png, image/jpeg, image/webp" required>
             <button type="submit" class="submit-btn">Đăng lên kho lưu trữ</button>
         </form>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn active" id="btnLatest" onclick="switchTab('latest')">Mới nhất</button>
+        <button class="nav-btn" id="btnTrending" onclick="switchTab('trending')">🔥 Nhiều yêu thích nhất</button>
     </div>
 
     <div class="gallery" id="gallery"></div>
@@ -214,19 +267,21 @@
     </div>
 
     <script>
-        // Danh sách hình nền ban đầu
-        const wallpapers = [
-            { title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Dark Neon Wave", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Cosmic Nebula", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Architectural Lines", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Sunset Horizon", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Fluid 3D Art", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Misty Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Cyberpunk City", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80" },
-            { title: "Soft Pastel Dream", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80" }
+        // Lấy dữ liệu từ localStorage (lưu vĩnh viễn trên trình duyệt), nếu chưa có thì dùng danh sách mặc định
+        let wallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers')) || [
+            { id: 1, title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3 },
+            { id: 2, title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8 },
+            { id: 3, title: "Dark Neon Wave", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5 },
+            { id: 4, title: "Cosmic Nebula", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10 },
+            { id: 5, title: "Architectural Lines", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2 },
+            { id: 6, title: "Sunset Horizon", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7 },
+            { id: 7, title: "Fluid 3D Art", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4 },
+            { id: 8, title: "Misty Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9 },
+            { id: 9, title: "Cyberpunk City", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6 },
+            { id: 10, title: "Soft Pastel Dream", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11 }
         ];
+
+        let currentTab = 'latest'; // Tab hiện tại: 'latest' hoặc 'trending'
 
         const galleryEl = document.getElementById('gallery');
         const modalEl = document.getElementById('imageModal');
@@ -234,10 +289,25 @@
         const closeModalEl = document.getElementById('closeModal');
         const uploadForm = document.getElementById('uploadForm');
 
+        // Hàm lưu vào localStorage và render lại giao diện
+        function saveDataAndRender() {
+            localStorage.setItem('ipad_wallpapers', JSON.stringify(wallpapers));
+            renderGallery();
+        }
+
         // Hàm vẽ danh sách hình nền lên giao diện
         function renderGallery() {
             galleryEl.innerHTML = '';
-            wallpapers.forEach((wp) => {
+
+            // Sắp xếp danh sách dựa theo tab đang chọn
+            let displayList = [...wallpapers];
+            if (currentTab === 'trending') {
+                displayList.sort((a, b) => b.likes - a.likes); // Sắp xếp nhiều tim nhất lên đầu
+            } else {
+                displayList.reverse(); // Đảo ngược để ảnh mới đăng lên đầu
+            }
+
+            displayList.forEach((wp) => {
                 const card = document.createElement('div');
                 card.className = 'wallpaper-card';
                 
@@ -245,7 +315,10 @@
                     <img src="${wp.url}" alt="${wp.title}" loading="lazy">
                     <div class="wallpaper-info">
                         <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
-                        <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                        <div class="actions">
+                            <button class="like-btn" onclick="likeWallpaper(${wp.id}, event)">❤️ ${wp.likes}</button>
+                            <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                        </div>
                     </div>
                 `;
 
@@ -259,7 +332,25 @@
             });
         }
 
-        // Chạy lần đầu tiên
+        // Chuyển đổi qua lại giữa tab Mới nhất và Nhiều yêu thích nhất
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('btnLatest').classList.toggle('active', tab === 'latest');
+            document.getElementById('btnTrending').classList.toggle('active', tab === 'trending');
+            renderGallery();
+        }
+
+        // Hàm tăng lượt thích (Thả tim)
+        function likeWallpaper(id, event) {
+            event.stopPropagation(); // Ngăn không cho bật modal ảnh lớn khi bấm tim
+            const wp = wallpapers.find(item => item.id === id);
+            if (wp) {
+                wp.likes += 1;
+                saveDataAndRender();
+            }
+        }
+
+        // Chạy lần đầu tiên khi mở trang
         renderGallery();
 
         // Xử lý sự kiện khi người dùng nhấn nút "Đăng lên kho lưu trữ"
@@ -270,23 +361,37 @@
             const fileInput = document.getElementById('imageFile');
 
             if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+
+                // KIỂM DUYỆT 1: Chỉ cho phép định dạng ảnh chuẩn cho iPad (JPG, PNG, WEBP)
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Lỗi kiểm duyệt: Chỉ chấp nhận định dạng hình nền chuẩn cho iPad (JPG, PNG, WEBP)!');
+                    return;
+                }
+
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
-                    // Thêm ảnh mới vào mảng dữ liệu đầu danh sách (unshift)
-                    wallpapers.unshift({
+                    // Thêm ảnh mới vào mảng dữ liệu
+                    const newWallpaper = {
+                        id: Date.now(),
                         title: titleInput.value,
-                        url: e.target.result // Chuyển file ảnh thành chuỗi Base64 để hiển thị ngay lập tức
-                    });
+                        url: e.target.result, // Chuyển file ảnh thành chuỗi Base64
+                        likes: 0
+                    };
 
-                    // Cập nhật lại giao diện
-                    renderGallery();
+                    wallpapers.push(newWallpaper);
+
+                    // Lưu vĩnh viễn và cập nhật lại giao diện
+                    saveDataAndRender();
 
                     // Reset form sau khi đăng thành công
                     uploadForm.reset();
+                    alert('Đăng ảnh thành công! Ảnh đã được lưu vĩnh viễn trên trình duyệt.');
                 }
 
-                reader.readAsDataURL(fileInput.files[0]);
+                reader.readAsDataURL(file);
             }
         });
 
