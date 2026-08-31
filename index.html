@@ -38,6 +38,32 @@
             font-size: 1.1rem;
         }
 
+        /* Thanh tài khoản (Auth Bar) */
+        .auth-bar {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .auth-btn {
+            background-color: #374151;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .auth-btn:hover { background-color: #4b5563; }
+        .auth-btn.logout { background-color: #dc2626; }
+        .auth-btn.logout:hover { background-color: #b91c1c; }
+
         /* Khu vực đăng hình (Upload Section) */
         .upload-section {
             background-color: #1f2937;
@@ -184,8 +210,9 @@
             transition: transform 0.1s;
         }
 
-        .like-btn:active {
-            transform: scale(1.2);
+        .like-btn.liked {
+            color: #ff3b30;
+            text-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
         }
 
         .download-btn {
@@ -205,7 +232,7 @@
             background-color: #2563eb;
         }
 
-        /* Modal khi bấm vào ảnh */
+        /* Modal chung */
         .modal {
             display: none;
             position: fixed;
@@ -220,19 +247,56 @@
             padding: 20px;
         }
 
-        .modal img {
+        .modal img.preview-img {
             max-width: 90%;
             max-height: 90vh;
             border-radius: 12px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
+        .modal-content {
+            background-color: #1f2937;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #f3f4f6;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4b5563;
+            background-color: #111827;
+            color: #f3f4f6;
+        }
+
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 15px;
+            right: 20px;
             color: white;
-            font-size: 2.5rem;
+            font-size: 2rem;
             cursor: pointer;
             font-weight: bold;
         }
@@ -244,6 +308,13 @@
         <h1>iPad Wallpapers Playground</h1>
         <p>Tuyển tập hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
     </header>
+
+    <div class="auth-bar" id="authBar">
+        <span id="userInfo" style="font-size: 0.95rem; color: #10b981; font-weight: 500; display: none;"></span>
+        <button class="auth-btn" id="btnLoginOpen" onclick="openModal('loginModal')">Đăng nhập</button>
+        <button class="auth-btn" id="btnRegisterOpen" onclick="openModal('registerModal')">Đăng ký</button>
+        <button class="auth-btn logout" id="btnLogout" style="display: none;" onclick="logout()">Đăng xuất</button>
+    </div>
 
     <div class="upload-section">
         <h3>Chia sẻ hình nền mới của bạn</h3>
@@ -261,33 +332,167 @@
 
     <div class="gallery" id="gallery"></div>
 
-    <div class="modal" id="imageModal">
-        <span class="close-modal" id="closeModal">&times;</span>
-        <img id="modalImg" src="" alt="Full Wallpaper">
+    <div class="modal" id="imageModal" onclick="closeModal('imageModal')">
+        <span class="close-modal">&times;</span>
+        <img class="preview-img" id="modalImg" src="" alt="Full Wallpaper">
+    </div>
+
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Đăng ký tài khoản</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Tên người dùng (Duy nhất)</label>
+                    <input type="text" id="regUsername" required placeholder="Nhập tên tài khoản...">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required placeholder="Nhập email...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="regPassword" required placeholder="Nhập mật khẩu...">
+                </div>
+                <div class="form-group">
+                    <label>Nhập lại mật khẩu</label>
+                    <input type="password" id="regConfirmPassword" required placeholder="Xác nhận mật khẩu...">
+                </div>
+                <button type="submit" class="submit-btn" style="width: 100%; margin-top: 10px;">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Tên người dùng</label>
+                    <input type="text" id="loginUsername" required placeholder="Nhập tên tài khoản...">
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="loginPassword" required placeholder="Nhập mật khẩu...">
+                </div>
+                <button type="submit" class="submit-btn" style="width: 100%; margin-top: 10px;">Đăng nhập</button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Lấy dữ liệu từ localStorage (lưu vĩnh viễn trên trình duyệt), nếu chưa có thì dùng danh sách mặc định
+        // --- DỮ LIỆU TÀI KHOẢN & NGƯỜI DÙNG HIỆN TẠI ---
+        let users = JSON.parse(localStorage.getItem('ipad_users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('ipad_current_user')) || null;
+
+        // --- DỮ LIỆU HÌNH NỀN ---
         let wallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers')) || [
-            { id: 1, title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3 },
-            { id: 2, title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8 },
-            { id: 3, title: "Dark Neon Wave", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5 },
-            { id: 4, title: "Cosmic Nebula", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10 },
-            { id: 5, title: "Architectural Lines", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2 },
-            { id: 6, title: "Sunset Horizon", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7 },
-            { id: 7, title: "Fluid 3D Art", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4 },
-            { id: 8, title: "Misty Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9 },
-            { id: 9, title: "Cyberpunk City", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6 },
-            { id: 10, title: "Soft Pastel Dream", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11 }
+            { id: 1, title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [] },
+            { id: 2, title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [] },
+            { id: 3, title: "Dark Neon Wave", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [] },
+            { id: 4, title: "Cosmic Nebula", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [] },
+            { id: 5, title: "Architectural Lines", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [] },
+            { id: 6, title: "Sunset Horizon", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [] },
+            { id: 7, title: "Fluid 3D Art", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [] },
+            { id: 8, title: "Misty Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [] },
+            { id: 9, title: "Cyberpunk City", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [] },
+            { id: 10, title: "Soft Pastel Dream", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [] }
         ];
 
         let currentTab = 'latest'; // Tab hiện tại: 'latest' hoặc 'trending'
 
         const galleryEl = document.getElementById('gallery');
-        const modalEl = document.getElementById('imageModal');
-        const modalImgEl = document.getElementById('modalImg');
-        const closeModalEl = document.getElementById('closeModal');
         const uploadForm = document.getElementById('uploadForm');
+
+        // Cập nhật giao diện thanh tài khoản
+        function updateAuthUI() {
+            const userInfoEl = document.getElementById('userInfo');
+            const btnLoginOpen = document.getElementById('btnLoginOpen');
+            const btnRegisterOpen = document.getElementById('btnRegisterOpen');
+            const btnLogout = document.getElementById('btnLogout');
+
+            if (currentUser) {
+                userInfoEl.textContent = `Xin chào, ${currentUser.username}`;
+                userInfoEl.style.display = 'inline';
+                btnLoginOpen.style.display = 'none';
+                btnRegisterOpen.style.display = 'none';
+                btnLogout.style.display = 'inline-block';
+            } else {
+                userInfoEl.style.display = 'none';
+                btnLoginOpen.style.display = 'inline-block';
+                btnRegisterOpen.style.display = 'inline-block';
+                btnLogout.style.display = 'none';
+            }
+        }
+
+        // --- XỬ LÝ ĐĂNG KÝ (Mỗi tên chỉ được tạo 1 lần) ---
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Mật khẩu nhập lại không khớp!');
+                return;
+            }
+
+            const existingUser = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+            if (existingUser) {
+                alert('Tên người dùng này đã tồn tại trên hệ thống! Vui lòng chọn tên khác.');
+                return;
+            }
+
+            users.push({ username, email, password });
+            localStorage.setItem('ipad_users', JSON.stringify(users));
+
+            alert('Đăng ký tài khoản thành công!');
+            document.getElementById('registerForm').reset();
+            closeModal('registerModal');
+            openModal('loginModal');
+        }
+
+        // --- XỬ LÝ ĐĂNG NHẬP ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+            if (!user) {
+                alert('Sai tên người dùng hoặc mật khẩu!');
+                return;
+            }
+
+            currentUser = user;
+            localStorage.setItem('ipad_current_user', JSON.stringify(currentUser));
+
+            alert(`Đăng nhập thành công với tài khoản: ${currentUser.username}`);
+            document.getElementById('loginForm').reset();
+            closeModal('loginModal');
+            updateAuthUI();
+            renderGallery();
+        }
+
+        // --- ĐĂNG XUẤT ---
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('ipad_current_user');
+            updateAuthUI();
+            renderGallery();
+            alert('Đã đăng xuất tài khoản.');
+        }
+
+        // Điều khiển Modal
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
 
         // Hàm lưu vào localStorage và render lại giao diện
         function saveDataAndRender() {
@@ -299,15 +504,17 @@
         function renderGallery() {
             galleryEl.innerHTML = '';
 
-            // Sắp xếp danh sách dựa theo tab đang chọn
             let displayList = [...wallpapers];
             if (currentTab === 'trending') {
-                displayList.sort((a, b) => b.likes - a.likes); // Sắp xếp nhiều tim nhất lên đầu
+                displayList.sort((a, b) => b.likes - a.likes);
             } else {
-                displayList.reverse(); // Đảo ngược để ảnh mới đăng lên đầu
+                displayList.reverse();
             }
 
             displayList.forEach((wp) => {
+                if (!wp.likedBy) wp.likedBy = [];
+                const isLikedByCurrent = currentUser && wp.likedBy.includes(currentUser.username);
+
                 const card = document.createElement('div');
                 card.className = 'wallpaper-card';
                 
@@ -316,16 +523,17 @@
                     <div class="wallpaper-info">
                         <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
                         <div class="actions">
-                            <button class="like-btn" onclick="likeWallpaper(${wp.id}, event)">❤️ ${wp.likes}</button>
+                            <button class="like-btn ${isLikedByCurrent ? 'liked' : ''}" onclick="likeWallpaper(${wp.id}, event)">
+                                ${isLikedByCurrent ? '❤️' : '🤍'} ${wp.likes}
+                            </button>
                             <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
                         </div>
                     </div>
                 `;
 
-                // Bấm vào thẻ để phóng to ảnh
                 card.addEventListener('click', () => {
-                    modalImgEl.src = wp.url;
-                    modalEl.style.display = 'flex';
+                    document.getElementById('modalImg').src = wp.url;
+                    openModal('imageModal');
                 });
 
                 galleryEl.appendChild(card);
@@ -340,22 +548,44 @@
             renderGallery();
         }
 
-        // Hàm tăng lượt thích (Thả tim)
+        // --- HỆ THỐNG THẢ TIM (Chỉ tài khoản đăng nhập và tối đa 1 lần/ảnh) ---
         function likeWallpaper(id, event) {
-            event.stopPropagation(); // Ngăn không cho bật modal ảnh lớn khi bấm tim
+            event.stopPropagation();
+
+            if (!currentUser) {
+                alert('Bạn cần đăng nhập để thả tim hình nền này!');
+                openModal('loginModal');
+                return;
+            }
+
             const wp = wallpapers.find(item => item.id === id);
             if (wp) {
+                if (!wp.likedBy) wp.likedBy = [];
+
+                if (wp.likedBy.includes(currentUser.username)) {
+                    alert('Bạn đã thích hình nền này rồi (Mỗi tài khoản chỉ được tim tối đa 1 lần)!');
+                    return;
+                }
+
                 wp.likes += 1;
+                wp.likedBy.push(currentUser.username);
                 saveDataAndRender();
             }
         }
 
-        // Chạy lần đầu tiên khi mở trang
+        // Khởi chạy lần đầu tiên khi mở trang
+        updateAuthUI();
         renderGallery();
 
         // Xử lý sự kiện khi người dùng nhấn nút "Đăng lên kho lưu trữ"
         uploadForm.addEventListener('submit', function(e) {
             e.preventDefault();
+
+            if (!currentUser) {
+                alert('Bạn cần đăng nhập để đăng tải hình nền lên hệ thống!');
+                openModal('loginModal');
+                return;
+            }
             
             const titleInput = document.getElementById('imageTitle');
             const fileInput = document.getElementById('imageFile');
@@ -363,7 +593,6 @@
             if (fileInput.files && fileInput.files[0]) {
                 const file = fileInput.files[0];
 
-                // KIỂM DUYỆT 1: Chỉ cho phép định dạng ảnh chuẩn cho iPad (JPG, PNG, WEBP)
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!allowedTypes.includes(file.type)) {
                     alert('Lỗi kiểm duyệt: Chỉ chấp nhận định dạng hình nền chuẩn cho iPad (JPG, PNG, WEBP)!');
@@ -371,38 +600,21 @@
                 }
 
                 const reader = new FileReader();
-                
                 reader.onload = function(e) {
-                    // Thêm ảnh mới vào mảng dữ liệu
                     const newWallpaper = {
                         id: Date.now(),
                         title: titleInput.value,
-                        url: e.target.result, // Chuyển file ảnh thành chuỗi Base64
-                        likes: 0
+                        url: e.target.result,
+                        likes: 0,
+                        likedBy: []
                     };
 
                     wallpapers.push(newWallpaper);
-
-                    // Lưu vĩnh viễn và cập nhật lại giao diện
                     saveDataAndRender();
-
-                    // Reset form sau khi đăng thành công
                     uploadForm.reset();
                     alert('Đăng ảnh thành công! Ảnh đã được lưu vĩnh viễn trên trình duyệt.');
                 }
-
                 reader.readAsDataURL(file);
-            }
-        });
-
-        // Đóng modal
-        closeModalEl.addEventListener('click', () => {
-            modalEl.style.display = 'none';
-        });
-
-        modalEl.addEventListener('click', (e) => {
-            if (e.target === modalEl) {
-                modalEl.style.display = 'none';
             }
         });
     </script>
