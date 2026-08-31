@@ -3,10 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chào Mừng</title>
+    <title>iPad Wallpapers - Playground</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f1115;
+            color: #f3f4f6;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wallpaper-card {
+            background-color: #1f2937;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .wallpaper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .wallpaper-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .wallpaper-info {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wallpaper-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        .download-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* Modal khi bấm vào ảnh */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Chào mừng bạn đến với website của chúng tôi!</h1>
-    <p>Rất vui được đón tiếp bạn ghé thăm. Chúc bạn có những trải nghiệm tuyệt vời.</p>
+
+    <header>
+        <h1>iPad Wallpapers Playground</h1>
+        <p>Tuyển tập hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
+    </header>
+
+    <div class="gallery" id="gallery">
+        </div>
+
+    <div class="modal" id="imageModal">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <img id="modalImg" src="" alt="Full Wallpaper">
+    </div>
+
+    <script>
+        // Danh sách 10 hình nền (sử dụng các ảnh phong cảnh/aesthetic từ Unsplash tối ưu cho iPad)
+        const wallpapers = [
+            { title: "Abstract Gradient 01", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Minimalist Mountains", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Dark Neon Wave", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Cosmic Nebula", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Architectural Lines", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Sunset Horizon", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Fluid 3D Art", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Misty Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Cyberpunk City", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80" },
+            { title: "Soft Pastel Dream", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80" }
+        ];
+
+        const galleryEl = document.getElementById('gallery');
+        const modalEl = document.getElementById('imageModal');
+        const modalImgEl = document.getElementById('modalImg');
+        const closeModalEl = document.getElementById('closeModal');
+
+        // Render danh sách hình nền ra giao diện
+        wallpapers.forEach((wp, index) => {
+            const card = document.createElement('div');
+            card.className = 'wallpaper-card';
+            
+            card.innerHTML = `
+                <img src="${wp.url}" alt="${wp.title}" loading="lazy">
+                <div class="wallpaper-info">
+                    <span class="wallpaper-title">${wp.title}</span>
+                    <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                </div>
+            `;
+
+            // Bấm vào thẻ để phóng to ảnh
+            card.addEventListener('click', () => {
+                modalImgEl.src = wp.url;
+                modalEl.style.display = 'flex';
+            });
+
+            galleryEl.appendChild(card);
+        });
+
+        // Đóng modal
+        closeModalEl.addEventListener('click', () => {
+            modalEl.style.display = 'none';
+        });
+
+        modalEl.addEventListener('click', (e) => {
+            if (e.target === modalEl) {
+                modalEl.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
