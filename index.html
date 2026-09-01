@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kho Hình Nền iPad – Tải hình nền chất lượng cao và giao diện hiện đại.">
     <title>Kho Hình Nền iPad - Modern UI</title>
     <style>
         @import url("https://fonts.googleapis.com/css?family=Inter:300,400,600,700");
 
+        /* --- BIẾN CSS & CẤU HÌNH THEME (DARK / LIGHT MODE) --- */
         :root {
             --bg-color: #0f1115;
             --text-color: #f3f4f6;
@@ -33,27 +35,43 @@
             --nav-item-hover: rgba(0, 0, 0, 0.05);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
 
-        body {
+        body, html {
+            min-height: 100vh;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            min-height: 100vh;
             padding: 40px 20px 100px 20px;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        header { text-align: center; margin-bottom: 25px; position: relative; }
-
-        header h1 {
-            font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;
-            background: linear-gradient(90deg, #60a5fa, #c084fc);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        /* --- HEADER --- */
+        header { 
+            text-align: center; 
+            margin-bottom: 25px; 
+            position: relative; 
         }
 
-        header p { color: var(--text-secondary); font-size: 1.1rem; }
+        header h1 {
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
 
+        header p { 
+            color: var(--text-secondary); 
+            font-size: 1.1rem; 
+        }
+
+        /* --- LIQUID NAV (TASKBAR NỔI DƯỚI MÀN HÌNH) --- */
         .liquid-nav {
             position: fixed;
             bottom: 20px;
@@ -111,11 +129,16 @@
             padding: 4px 10px;
         }
 
+        /* --- KHU VỰC UPLOAD HÌNH NỀN --- */
         .upload-section {
-            background-color: var(--card-bg); max-width: 600px;
-            margin: 0 auto 25px auto; padding: 25px; border-radius: 16px;
+            background-color: var(--card-bg); 
+            max-width: 600px;
+            margin: 0 auto 25px auto; 
+            padding: 25px; 
+            border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 2px dashed var(--card-border); text-align: center;
+            border: 2px dashed var(--card-border); 
+            text-align: center;
         }
 
         .upload-section h3 { margin-bottom: 15px; font-size: 1.2rem; }
@@ -125,146 +148,245 @@
         .upload-form input[type="text"],
         .upload-form select,
         .upload-form input[type="file"] {
-            padding: 10px; border-radius: 8px;
+            padding: 10px; 
+            border-radius: 8px;
             border: 1px solid var(--card-border);
-            background-color: var(--input-bg); color: var(--text-color); font-size: 0.95rem;
+            background-color: var(--input-bg); 
+            color: var(--text-color); 
+            font-size: 0.95rem;
         }
 
         .submit-btn {
-            background-color: #10b981; color: white; border: none;
-            padding: 12px; border-radius: 8px; font-size: 1rem;
-            font-weight: 600; cursor: pointer;
+            background-color: #10b981; 
+            color: white; 
+            border: none;
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 1rem;
+            font-weight: 600; 
+            cursor: pointer;
         }
 
         .submit-btn:hover { background-color: #059669; }
 
+        /* --- LỌC VÀ SẮP XẾP --- */
         .filter-sort-bar {
-            max-width: 1200px; margin: 0 auto 25px auto;
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 15px; background-color: var(--card-bg);
-            padding: 15px 20px; border-radius: 12px; border: 1px solid var(--card-border);
+            max-width: 1200px; 
+            margin: 0 auto 25px auto;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            flex-wrap: wrap; 
+            gap: 15px; 
+            background-color: var(--card-bg);
+            padding: 15px 20px; 
+            border-radius: 12px; 
+            border: 1px solid var(--card-border);
         }
 
         .category-filters { display: flex; gap: 8px; flex-wrap: wrap; }
 
         .filter-btn {
-            background: var(--input-bg); border: 1px solid var(--card-border);
-            color: var(--text-secondary); padding: 6px 14px; border-radius: 6px;
-            font-size: 0.85rem; cursor: pointer; font-weight: 500;
+            background: var(--input-bg); 
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary); 
+            padding: 6px 14px; 
+            border-radius: 6px;
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            font-weight: 500;
         }
 
         .filter-btn.active {
-            background-color: #3b82f6; color: white; border-color: #3b82f6;
+            background-color: #3b82f6; 
+            color: white; 
+            border-color: #3b82f6;
         }
 
         .sort-select {
-            padding: 6px 12px; border-radius: 6px;
+            padding: 6px 12px; 
+            border-radius: 6px;
             border: 1px solid var(--card-border);
-            background-color: var(--input-bg); color: var(--text-color);
-            font-size: 0.85rem; cursor: pointer;
+            background-color: var(--input-bg); 
+            color: var(--text-color);
+            font-size: 0.85rem; 
+            cursor: pointer;
         }
 
+        /* --- KHO GALLERY HÌNH NỀN --- */
         .gallery {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px; max-width: 1200px; margin: 0 auto;
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto;
         }
 
         .wallpaper-card {
-            background-color: var(--card-bg); border-radius: 16px;
-            overflow: hidden; border: 1px solid var(--card-border);
+            background-color: var(--card-bg); 
+            border-radius: 16px;
+            overflow: hidden; 
+            border: 1px solid var(--card-border);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease; cursor: pointer;
+            transition: transform 0.3s ease; 
+            cursor: pointer;
         }
 
         .wallpaper-card:hover { transform: translateY(-5px); }
 
         .wallpaper-card img {
-            width: 100%; height: 300px; object-fit: cover; display: block;
+            width: 100%; 
+            height: 300px; 
+            object-fit: cover; 
+            display: block;
         }
 
         .wallpaper-info { padding: 12px 15px; }
 
         .card-header-row {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 8px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center; 
+            margin-bottom: 8px;
         }
 
         .wallpaper-title {
-            font-size: 0.9rem; font-weight: 500; color: var(--title-color);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            color: var(--title-color);
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            max-width: 110px;
         }
 
         .actions { display: flex; align-items: center; gap: 8px; }
 
         .like-btn {
-            background: none; border: none; color: #ef4444;
-            font-size: 0.85rem; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; gap: 4px;
+            background: none; 
+            border: none; 
+            color: #ef4444;
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            gap: 4px;
         }
 
         .download-btn {
-            background-color: #3b82f6; color: white; border: none;
-            padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; text-decoration: none;
+            background-color: #3b82f6; 
+            color: white; 
+            border: none;
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            font-size: 0.8rem; 
+            text-decoration: none;
         }
 
         .preview-tags { display: flex; gap: 6px; flex-wrap: wrap; min-height: 22px; }
 
         .mini-tag {
-            background-color: var(--input-bg); border: 1px solid var(--card-border);
-            color: var(--text-secondary); font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;
+            background-color: var(--input-bg); 
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary); 
+            font-size: 0.75rem; 
+            padding: 2px 8px; 
+            border-radius: 6px;
         }
 
         .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 30px; }
 
         .page-btn {
-            background-color: var(--card-bg); border: 1px solid var(--card-border);
-            color: var(--text-color); padding: 8px 14px; border-radius: 6px;
-            cursor: pointer; font-weight: 600;
+            background-color: var(--card-bg); 
+            border: 1px solid var(--card-border);
+            color: var(--text-color); 
+            padding: 8px 14px; 
+            border-radius: 6px;
+            cursor: pointer; 
+            font-weight: 600;
         }
 
         .page-btn.active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
 
+        /* --- MODAL XEM CHI TIẾT & HASHTAG --- */
         .modal {
-            display: none; position: fixed; z-index: 1000;
-            top: 0; left: 0; width: 100%; height: 100%;
+            display: none; 
+            position: fixed; 
+            z-index: 1000;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            justify-content: center; align-items: center; padding: 20px;
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
         }
 
         .modal-body {
-            background-color: var(--card-bg); padding: 20px; border-radius: 16px;
-            max-width: 500px; width: 100%; display: flex; flex-direction: column;
-            align-items: center; position: relative; max-height: 95vh; overflow-y: auto;
+            background-color: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 16px;
+            max-width: 500px; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            position: relative; 
+            max-height: 95vh; 
+            overflow-y: auto;
         }
 
         .modal-body img.preview-img {
-            width: 100%; max-height: 50vh; object-fit: contain;
-            border-radius: 12px; margin-bottom: 15px;
+            width: 100%; 
+            max-height: 50vh; 
+            object-fit: contain;
+            border-radius: 12px; 
+            margin-bottom: 15px;
         }
 
         .reaction-tags-container {
-            display: flex; flex-wrap: wrap; gap: 8px; width: 100%;
-            margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border);
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            width: 100%;
+            margin-top: 10px; 
+            padding-top: 10px; 
+            border-top: 1px solid var(--card-border);
         }
 
         .reaction-tag {
-            background-color: var(--input-bg); border: 1px solid var(--card-border);
-            color: var(--text-color); padding: 6px 12px; border-radius: 10px;
-            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
-            gap: 6px; transition: all 0.2s;
+            background-color: var(--input-bg); 
+            border: 1px solid var(--card-border);
+            color: var(--text-color); 
+            padding: 6px 12px; 
+            border-radius: 10px;
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center;
+            gap: 6px; 
+            transition: all 0.2s;
         }
 
         .reaction-tag:hover { border-color: #3b82f6; }
         .reaction-tag.reacted {
             background-color: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6; color: #60a5fa;
+            border-color: #3b82f6; 
+            color: #60a5fa;
         }
 
         .add-tag-trigger {
-            background-color: var(--input-bg); border: 1px dashed var(--card-border);
-            color: var(--text-secondary); padding: 6px 12px; border-radius: 10px;
-            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
-            justify-content: center; font-weight: bold;
+            background-color: var(--input-bg); 
+            border: 1px dashed var(--card-border);
+            color: var(--text-secondary); 
+            padding: 6px 12px; 
+            border-radius: 10px;
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            font-weight: bold;
         }
 
         .add-tag-input-box { display: none; width: 100%; margin-top: 10px; gap: 8px; }
@@ -278,80 +400,149 @@
             color: white; border: none; cursor: pointer; font-weight: 600;
         }
 
-        .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-color); font-size: 2rem; cursor: pointer; z-index: 10; }
+        .close-modal { 
+            position: absolute; 
+            top: 15px; 
+            right: 20px; 
+            color: var(--text-color); 
+            font-size: 2rem; 
+            cursor: pointer; 
+            z-index: 10; 
+        }
 
+        /* --- MODAL LOGIN / REGISTER VỚI VIDEO BACKGROUND --- */
         .animated-auth-modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh; z-index: 2000;
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0;
+            width: 100vw; 
+            height: 100vh; 
+            z-index: 2000;
             overflow: hidden;
         }
 
         .vid-container {
-            position: relative; width: 100vw; height: 100vh; overflow: hidden;
+            position: relative; 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden;
         }
 
         .bgvid {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            object-fit: cover; z-index: 1;
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            object-fit: cover; 
+            z-index: 1;
         }
 
         .overlay {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100vw; 
+            height: 100vh;
             background: linear-gradient(120deg, rgba(30,30,40,0.7) 60%, rgba(0, 89, 255, 0.2) 100%);
             z-index: 2;
         }
 
         .inner-container {
-            position: relative; z-index: 3; height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            position: relative; 
+            z-index: 3; 
+            height: 100vh;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
         }
 
         .box {
-            background: rgba(23, 23, 26, 0.82); border-radius: 18px;
+            background: rgba(23, 23, 26, 0.82); 
+            border-radius: 18px;
             box-shadow: 0 8px 32px 0 #000a, 0 1.5px 8px 0 #0084ff55;
-            padding: 38px 32px 28px 32px; display: flex; flex-direction: column;
-            align-items: center; min-width: 340px; max-width: 90vw;
-            backdrop-filter: blur(8px); border: 1.5px solid #3f90fa; position: relative;
+            padding: 38px 32px 28px 32px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-width: 320px; 
+            max-width: 90vw;
+            backdrop-filter: blur(8px); 
+            border: 1.5px solid #3f90fa; 
+            position: relative;
         }
 
-        .box h1 { color: #fff; margin-bottom: 22px; font-size: 1.5rem; letter-spacing: 1px; text-align: center; }
-
-        .box input[type="text"], .box input[type="email"], .box input[type="password"] {
-            width: 100%; padding: 12px 14px; margin-bottom: 16px; border: none;
-            border-radius: 8px; background: #232526; color: #fff; font-size: 1rem;
-            outline: none; transition: box-shadow 0.2s, border 0.2s;
-            box-shadow: 0 1px 4px #fd0000; border: 1.5px solid #444;
+        .box h1 { 
+            color: #fff; 
+            margin-bottom: 22px; 
+            font-size: 1.5rem; 
+            letter-spacing: 1px; 
+            text-align: center; 
         }
 
-        .box input[type="text"]:focus, .box input[type="email"]:focus, .box input[type="password"]:focus {
-            border: 1.5px solid #3f90fa; box-shadow: 0 0 0 2px #3f90fa55;
+        .box input[type="text"], 
+        .box input[type="email"], 
+        .box input[type="password"] {
+            width: 100%; 
+            padding: 12px 14px; 
+            margin-bottom: 16px; 
+            border: none;
+            border-radius: 8px; 
+            background: #232526; 
+            color: #fff; 
+            font-size: 1rem;
+            outline: none; 
+            transition: box-shadow 0.2s, border 0.2s;
+            box-shadow: 0 1px 4px #fd0000; 
+            border: 1.5px solid #444;
+        }
+
+        .box input[type="text"]:focus, 
+        .box input[type="email"]:focus, 
+        .box input[type="password"]:focus {
+            border: 1.5px solid #3f90fa; 
+            box-shadow: 0 0 0 2px #3f90fa55;
         }
 
         .box button.action-btn {
-            width: 100%; padding: 12px 0;
+            width: 100%; 
+            padding: 12px 0;
             background: linear-gradient(90deg, #3f90fa 60%, #fc0101 100%);
-            color: #232526; border: none; border-radius: 8px; font-size: 1.1rem;
-            font-weight: 600; cursor: pointer; margin-bottom: 12px;
-            transition: background 0.2s, color 0.2s; box-shadow: 0 2px 8px #3f90fa33;
+            color: #232526; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1rem;
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-bottom: 12px;
+            transition: background 0.2s, color 0.2s; 
+            box-shadow: 0 2px 8px #3f90fa33;
             letter-spacing: 0.5px;
         }
 
         .box button.action-btn:hover {
-            background: linear-gradient(90deg, #3f90fa 0%, #fc0101 100%); color: #fff;
+            background: linear-gradient(90deg, #3f90fa 0%, #fc0101 100%); 
+            color: #fff;
         }
 
         .box p { color: #fff; font-size: 1rem; margin: 0; }
 
         .signup-toggle {
-            color: #3f90fa; cursor: pointer; font-weight: 600; margin-left: 4px;
+            color: #3f90fa; 
+            cursor: pointer; 
+            font-weight: 600; 
+            margin-left: 4px;
             transition: text-decoration 0.2s;
         }
 
         .signup-toggle:hover { text-decoration: underline; }
 
         .close-animated-modal {
-            position: absolute; top: 10px; right: 15px; color: #fff;
-            font-size: 1.8rem; cursor: pointer; z-index: 10;
+            position: absolute; 
+            top: 10px; 
+            right: 15px; 
+            color: #fff;
+            font-size: 1.8rem; 
+            cursor: pointer; 
+            z-index: 10;
         }
 
         @media (max-width: 600px) {
@@ -364,12 +555,13 @@
 </head>
 <body>
 
+    <!-- TRANG HEADER -->
     <header>
         <h1>Kho Hình Nền iPad</h1>
-        <p>Tuyển tập 60 hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
+        <p>Tuyển tập hình nền chất lượng cao dành cho màn hình iPad của bạn.</p>
     </header>
 
-    <!-- THANH TASKBAR LIQUID NỔI PHÍA DƯỚI MÀN HÌNH -->
+    <!-- THANH NAV NỔI BO TRÒN (LIQUID NAV BAR) -->
     <nav class="liquid-nav">
         <button class="liquid-nav-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">🏠 Trang chủ</button>
         <button class="liquid-nav-btn" onclick="toggleTheme()">☀️ / 🌙 Giao diện</button>
@@ -380,6 +572,7 @@
         <button class="liquid-nav-btn logout" id="btnLogout" style="display: none;" onclick="logout()">Thoát</button>
     </nav>
 
+    <!-- KHU VỰC ĐĂNG ẢNH HÌNH NỀN -->
     <div class="upload-section">
         <h3>Chia sẻ hình nền mới của bạn</h3>
         <form class="upload-form" id="uploadForm">
@@ -395,6 +588,7 @@
         </form>
     </div>
 
+    <!-- THANH BỘ LỌC VÀ SẮP XẾP -->
     <div class="filter-sort-bar">
         <div class="category-filters">
             <button class="filter-btn active" onclick="filterCategory('all', this)">Tất cả</button>
@@ -410,14 +604,15 @@
         </select>
     </div>
 
+    <!-- KHU VỰC HIỂN THỊ DANH SÁCH ẢNH -->
     <div class="gallery" id="gallery"></div>
     <div class="pagination" id="pagination"></div>
 
-    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ VIDEO ANIMATED -->
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ VỚI VIDEO NỀN -->
     <div class="animated-auth-modal" id="animatedAuthModal">
         <div class="vid-container">
             <video id="Video1" class="bgvid back" autoplay muted loop playsinline>
-                <source src="https://v1.pinterest.com/videos/iht/720p/a7/c6/35/a7c6356f7ec443a65aa9cfe6f8549168.mp4" type="video/mp4">
+                <source src="https://v1.pinimg.com/videos/iht/720p/a7/c6/35/a7c6356f7ec443a65aa9cfe6f8549168.mp4" type="video/mp4">
             </video>
             <div class="overlay"></div>
             <div class="inner-container">
@@ -446,7 +641,7 @@
         </div>
     </div>
 
-    <!-- MODAL XEM CHI TIẾT ẢNH & HASHTAG -->
+    <!-- MODAL XEM CHI TIẾT HÌNH NỀN & HASHTAG -->
     <div class="modal" id="imageModal" onclick="closeModalOnOutside(event, 'imageModal')">
         <div class="modal-body">
             <span class="close-modal" onclick="closeModal('imageModal')">&times;</span>
@@ -463,6 +658,7 @@
         </div>
     </div>
 
+    <!-- XỬ LÝ JAVASCRIPT -->
     <script>
         let users = JSON.parse(localStorage.getItem('ipad_users')) || [];
         let currentUser = JSON.parse(localStorage.getItem('ipad_current_user')) || null;
@@ -474,65 +670,11 @@
             { id: 3, title: "Sóng neon huyền ảo", category: "hien-dai", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: { "neon": {count: 7, users: []}, "dark": {count: 9, users: []} } },
             { id: 4, title: "Tinh vân vũ trụ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: { "vutu": {count: 15, users: []} } },
             { id: 5, title: "Đường nét kiến trúc", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
-            { id: 6, title: "Hoàng hôn trên biển", category: "phong-canh", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: { "hoanghon": {count: 6, users: []} } },
-            { id: 7, title: "Nghệ thuật 3D uốn lượn", category: "truu-tuong", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
-            { id: 8, title: "Rừng thông sương mù", category: "phong-canh", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: { "nature": {count: 5, users: []} } },
-            { id: 9, title: "Thành phố Cyberpunk", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 10, title: "Giấc mơ pastel nhẹ nhàng", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
-            { id: 11, title: "Đỉnh núi tuyết Alps", category: "phong-canh", url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
-            { id: 12, title: "Đại dương xanh thẳm", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: {} },
-            { id: 13, title: "Lưới neon tương lai", category: "hien-dai", url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
-            { id: 14, title: "Kiến trúc kính hiện đại", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 1, likedBy: [], tags: {} },
-            { id: 15, title: "Hào quang dải ngân hà", category: "truu-tuong", url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80", likes: 15, likedBy: [], tags: {} },
-            { id: 16, title: "Khói màu nghệ thuật", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
-            { id: 17, title: "Bức tường trắng tinh khôi", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
-            { id: 18, title: "Bóng lá đơn độc", category: "toi-gian", url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 19, title: "Con đường mùa thu vàng", category: "phong-canh", url: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
-            { id: 20, title: "Bầu trời đầy sao đêm", category: "phong-canh", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} },
-            { id: 21, title: "Sóng không gian ảo", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
-            { id: 22, title: "Tông màu tối tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
-            { id: 23, title: "Văn phòng kính sang trọng", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
-            { id: 24, title: "Cây xanh nhiệt đới", category: "phong-canh", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
-            { id: 25, title: "Sơn dầu loang lổ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 26, title: "Bê tông xám dịu mắt", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
-            { id: 27, title: "Ánh đèn đô thị rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [], tags: {} },
-            { id: 28, title: "Đụn cát sa mạc", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
-            { id: 29, title: "Kết cấu vàng óng ánh", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
-            { id: 30, title: "Góc làm việc ngăn nắp", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
-            { id: 31, title: "Bình minh trên cao nguyên", category: "phong-canh", url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: { "nature": {count: 4, users: []} } },
-            { id: 32, title: "Sóng nước ngọc bích", category: "toi-gian", url: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
-            { id: 33, title: "Cầu vượt đêm rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: { "night": {count: 3, users: []} } },
-            { id: 34, title: "Mảnh ghép hình học", category: "truu-tuong", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 35, title: "Rừng lá đỏ mùa thu", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} },
-            { id: 36, title: "Đường chân trời tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
-            { id: 37, title: "Tàu điện xuyên đêm", category: "hien-dai", url: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
-            { id: 38, title: "Mặt hồ phẳng lặng", category: "phong-canh", url: "https://images.unsplash.com/photo-1439853949127-fa647821eba0?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
-            { id: 39, title: "Đèn LED nghệ thuật", category: "truu-tuong", url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
-            { id: 40, title: "Không gian xám kem", category: "toi-gian", url: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
-            { id: 41, title: "Tòa nhà chọc trời", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
-            { id: 42, title: "Thác nước trong rừng", category: "phong-canh", url: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [], tags: {} },
-            { id: 43, title: "Vòng xoáy đa sắc", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
-            { id: 44, title: "Mặt trăng khuyết", category: "toi-gian", url: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=1200&q=80", likes: 15, likedBy: [], tags: {} },
-            { id: 45, title: "Phố cổ lên đèn", category: "hien-dai", url: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
-            { id: 46, title: "Đảo nhỏ giữa đại dương", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 47, title: "Thủy tinh phản quang", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
-            { id: 48, title: "Tuyết rơi lặng lẽ", category: "toi-gian", url: "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
-            { id: 49, title: "Siêu xe trong đêm", category: "hien-dai", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80", likes: 16, likedBy: [], tags: {} },
-            { id: 50, title: "Cánh đồng hoa lavender", category: "phong-canh", url: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
-            { id: 51, title: "Bọt nước siêu mịn", category: "truu-tuong", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
-            { id: 52, title: "Đường kẻ đơn sắc", category: "toi-gian", url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
-            { id: 53, title: "Cầu Cổng Vàng sương mù", category: "hien-dai", url: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
-            { id: 54, title: "Rạn hoa san hô", category: "phong-canh", url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
-            { id: 55, title: "Sóng âm kỹ thuật số", category: "truu-tuong", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
-            { id: 56, title: "Cửa sổ ngày mưa", category: "toi-gian", url: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: {} },
-            { id: 57, title: "Thành phố góc nhìn không giàn", category: "hien-dai", url: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
-            { id: 58, title: "Hẻm núi Grand Canyon", category: "phong-canh", url: "https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
-            { id: 59, title: "Năng lượng Plasma", category: "truu-tuong", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
-            { id: 60, title: "Tách cà phê sáng", category: "toi-gian", url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} }
+            { id: 6, title: "Hoàng hôn trên biển", category: "phong-canh", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: { "hoanghon": {count: 6, users: []} } }
         ];
 
         let storedWallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers'));
-        let wallpapers = (!storedWallpapers || storedWallpapers.length < 60) ? defaultWallpapers : storedWallpapers;
+        let wallpapers = (!storedWallpapers || storedWallpapers.length === 0) ? defaultWallpapers : storedWallpapers;
         localStorage.setItem('ipad_wallpapers', JSON.stringify(wallpapers));
 
         let currentCategory = 'all';
@@ -540,6 +682,7 @@
         let currentPage = 1;
         const itemsPerPage = 12;
 
+        /* Quản lý Light / Dark Mode */
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -551,6 +694,7 @@
         const savedTheme = localStorage.getItem('ipad_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
 
+        /* Cập nhật UI Tài khoản */
         function updateAuthUI() {
             const userInfoEl = document.getElementById('userInfo');
             const btnLoginOpen = document.getElementById('btnLoginOpen');
@@ -571,6 +715,7 @@
             }
         }
 
+        /* Quản lý Modal Đăng nhập / Đăng ký */
         function openAnimatedAuthModal(mode) {
             switchAuthMode(mode);
             document.getElementById('animatedAuthModal').style.display = 'block';
@@ -597,13 +742,13 @@
             const password = document.getElementById('animLoginPass').value;
 
             if (!username || !password) {
-                alert('Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!');
+                alert('Vui lòng điền đầy đủ thông tin!');
                 return;
             }
 
             const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
             if (!user) {
-                alert('Tài khoản hoặc mật khẩu không chính xác!');
+                alert('Mật khẩu hoặc tên đăng nhập không đúng!');
                 return;
             }
 
@@ -625,13 +770,13 @@
             }
 
             if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-                alert('Tên người dùng đã tồn tại!');
+                alert('Tên tài khoản này đã tồn tại!');
                 return;
             }
 
             users.push({ username, email, password });
             localStorage.setItem('ipad_users', JSON.stringify(users));
-            alert('Đăng ký tài khoản thành công! Vui lòng đăng nhập.');
+            alert('Đăng ký tài khoản thành công! Bạn có thể đăng nhập ngay.');
             switchAuthMode('login');
         }
 
@@ -670,6 +815,7 @@
             }
         }
 
+        /* Hiển thị danh sách ảnh */
         function renderGallery() {
             const galleryEl = document.getElementById('gallery');
             const paginationEl = document.getElementById('pagination');
@@ -715,7 +861,7 @@
                         <div class="card-header-row">
                             <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
                             <div class="actions">
-                                <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${wp.id}, event)">
+                                <button class="like-btn" onclick="toggleLike(${wp.id}, event)">
                                     ${isLiked ? '❤️' : '🤍'} ${wp.likes}
                                 </button>
                                 <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
@@ -745,6 +891,7 @@
             }
         }
 
+        /* Modal Chi tiết & Hashtag */
         function openImageModal(id) {
             activeModalWallpaperId = id;
             const wp = wallpapers.find(item => item.id === id);
@@ -871,10 +1018,11 @@
             }
         }
 
+        /* Đăng hình ảnh mới */
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
             if (!currentUser) {
-                alert('Vui lòng đăng nhập để đăng ảnh!');
+                alert('Vui lòng đăng nhập để tải ảnh lên!');
                 openAnimatedAuthModal('login');
                 return;
             }
@@ -903,6 +1051,7 @@
             }
         });
 
+        // Khởi tạo trang
         updateAuthUI();
         renderGallery();
     </script>
