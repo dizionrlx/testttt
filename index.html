@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPad Wallpapers - Playground</title>
+    <title>Kho Hình Nền iPad - Modern UI</title>
     <style>
+        @import url("https://fonts.googleapis.com/css?family=Inter:300,400,600,700");
+
         :root {
             --bg-color: #0f1115;
             --text-color: #f3f4f6;
@@ -13,6 +15,9 @@
             --input-bg: #111827;
             --text-secondary: #9ca3af;
             --title-color: #e5e7eb;
+            --nav-bg: rgba(31, 41, 55, 0.75);
+            --nav-border: rgba(255, 255, 255, 0.15);
+            --nav-item-hover: rgba(255, 255, 255, 0.1);
         }
 
         [data-theme="light"] {
@@ -23,423 +28,357 @@
             --input-bg: #f1f5f9;
             --text-secondary: #64748b;
             --title-color: #0f172a;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --nav-border: rgba(0, 0, 0, 0.1);
+            --nav-item-hover: rgba(0, 0, 0, 0.05);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 40px 20px 100px 20px;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 0;
-            right: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-color);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
+        header { text-align: center; margin-bottom: 25px; position: relative; }
 
         header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
+            font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;
             background: linear-gradient(90deg, #60a5fa, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
+        header p { color: var(--text-secondary); font-size: 1.1rem; }
 
-        .auth-bar {
-            max-width: 600px;
-            margin: 0 auto 20px auto;
+        .liquid-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
             align-items: center;
-        }
-
-        .auth-btn {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid var(--card-border);
+            gap: 8px;
             padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: 500;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 99px;
+            border: 1px solid var(--nav-border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .auth-btn.logout { background-color: #dc2626; color: white; border: none; }
+        .liquid-nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.25s, transform 0.2s;
+            font-family: inherit;
+        }
+
+        .liquid-nav-btn:hover {
+            background: var(--nav-item-hover);
+            transform: translateY(-2px);
+        }
+
+        .liquid-nav-btn.logout { color: #f87171; }
+
+        .liquid-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--nav-border);
+            margin: 0 4px;
+        }
+
+        .user-pill {
+            font-size: 0.85rem;
+            color: #10b981;
+            font-weight: 600;
+            padding: 4px 10px;
+        }
 
         .upload-section {
-            background-color: var(--card-bg);
-            max-width: 600px;
-            margin: 0 auto 25px auto;
-            padding: 25px;
-            border-radius: 16px;
+            background-color: var(--card-bg); max-width: 600px;
+            margin: 0 auto 25px auto; padding: 25px; border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 2px dashed var(--card-border);
-            text-align: center;
+            border: 2px dashed var(--card-border); text-align: center;
         }
 
         .upload-section h3 { margin-bottom: 15px; font-size: 1.2rem; }
 
-        .upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .upload-form { display: flex; flex-direction: column; gap: 12px; }
 
         .upload-form input[type="text"],
         .upload-form select,
         .upload-form input[type="file"] {
-            padding: 10px;
-            border-radius: 8px;
+            padding: 10px; border-radius: 8px;
             border: 1px solid var(--card-border);
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            font-size: 0.95rem;
+            background-color: var(--input-bg); color: var(--text-color); font-size: 0.95rem;
         }
 
         .submit-btn {
-            background-color: #10b981;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
+            background-color: #10b981; color: white; border: none;
+            padding: 12px; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer;
         }
 
         .submit-btn:hover { background-color: #059669; }
 
         .filter-sort-bar {
-            max-width: 1200px;
-            margin: 0 auto 25px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            background-color: var(--card-bg);
-            padding: 15px 20px;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
+            max-width: 1200px; margin: 0 auto 25px auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 15px; background-color: var(--card-bg);
+            padding: 15px 20px; border-radius: 12px; border: 1px solid var(--card-border);
         }
 
-        .category-filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+        .category-filters { display: flex; gap: 8px; flex-wrap: wrap; }
 
         .filter-btn {
-            background: var(--input-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-secondary);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
+            background: var(--input-bg); border: 1px solid var(--card-border);
+            color: var(--text-secondary); padding: 6px 14px; border-radius: 6px;
+            font-size: 0.85rem; cursor: pointer; font-weight: 500;
         }
 
         .filter-btn.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
+            background-color: #3b82f6; color: white; border-color: #3b82f6;
         }
 
         .sort-select {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 6px 12px; border-radius: 6px;
             border: 1px solid var(--card-border);
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            font-size: 0.85rem;
-            cursor: pointer;
+            background-color: var(--input-bg); color: var(--text-color);
+            font-size: 0.85rem; cursor: pointer;
         }
 
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px; max-width: 1200px; margin: 0 auto;
         }
 
         .wallpaper-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--card-border);
+            background-color: var(--card-bg); border-radius: 16px;
+            overflow: hidden; border: 1px solid var(--card-border);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
+            transition: transform 0.3s ease; cursor: pointer;
         }
 
         .wallpaper-card:hover { transform: translateY(-5px); }
 
         .wallpaper-card img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            display: block;
+            width: 100%; height: 300px; object-fit: cover; display: block;
         }
 
-        .wallpaper-info {
-            padding: 12px 15px;
-        }
+        .wallpaper-info { padding: 12px 15px; }
 
         .card-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 8px;
         }
 
         .wallpaper-title {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--title-color);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 110px;
+            font-size: 0.9rem; font-weight: 500; color: var(--title-color);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;
         }
 
-        .actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .actions { display: flex; align-items: center; gap: 8px; }
 
         .like-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            background: none; border: none; color: #ef4444;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 4px;
         }
-
-        .like-btn.liked { color: #ff3b30; }
 
         .download-btn {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            text-decoration: none;
+            background-color: #3b82f6; color: white; border: none;
+            padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; text-decoration: none;
         }
 
-        /* Hiển thị tối đa 2 hashtag ở card ngoài */
-        .preview-tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            min-height: 22px;
-        }
+        .preview-tags { display: flex; gap: 6px; flex-wrap: wrap; min-height: 22px; }
 
         .mini-tag {
-            background-color: var(--input-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 6px;
+            background-color: var(--input-bg); border: 1px solid var(--card-border);
+            color: var(--text-secondary); font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;
         }
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 30px;
-        }
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 30px; }
 
         .page-btn {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-color);
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
+            background-color: var(--card-bg); border: 1px solid var(--card-border);
+            color: var(--text-color); padding: 8px 14px; border-radius: 6px;
+            cursor: pointer; font-weight: 600;
         }
 
-        .page-btn.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
+        .page-btn.active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
 
-        /* Modal Chi Tiết Ảnh */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            display: none; position: fixed; z-index: 1000;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            justify-content: center; align-items: center; padding: 20px;
         }
 
         .modal-body {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            max-width: 500px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            max-height: 95vh;
-            overflow-y: auto;
+            background-color: var(--card-bg); padding: 20px; border-radius: 16px;
+            max-width: 500px; width: 100%; display: flex; flex-direction: column;
+            align-items: center; position: relative; max-height: 95vh; overflow-y: auto;
         }
 
         .modal-body img.preview-img {
-            width: 100%;
-            max-height: 50vh;
-            object-fit: contain;
-            border-radius: 12px;
-            margin-bottom: 15px;
+            width: 100%; max-height: 50vh; object-fit: contain;
+            border-radius: 12px; margin-bottom: 15px;
         }
 
-        /* Khu vực hiển thị hashtag dạng reaction */
         .reaction-tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            width: 100%;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--card-border);
+            display: flex; flex-wrap: wrap; gap: 8px; width: 100%;
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--card-border);
         }
 
         .reaction-tag {
-            background-color: var(--input-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-color);
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
+            background-color: var(--input-bg); border: 1px solid var(--card-border);
+            color: var(--text-color); padding: 6px 12px; border-radius: 10px;
+            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
+            gap: 6px; transition: all 0.2s;
         }
 
         .reaction-tag:hover { border-color: #3b82f6; }
         .reaction-tag.reacted {
             background-color: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
-            color: #60a5fa;
+            border-color: #3b82f6; color: #60a5fa;
         }
 
         .add-tag-trigger {
-            background-color: var(--input-bg);
-            border: 1px dashed var(--card-border);
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            background-color: var(--input-bg); border: 1px dashed var(--card-border);
+            color: var(--text-secondary); padding: 6px 12px; border-radius: 10px;
+            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-weight: bold;
         }
-        .add-tag-trigger:hover { color: var(--text-color); border-color: var(--text-secondary); }
 
-        .add-tag-input-box {
-            display: none;
-            width: 100%;
-            margin-top: 10px;
-            gap: 8px;
-        }
+        .add-tag-input-box { display: none; width: 100%; margin-top: 10px; gap: 8px; }
         .add-tag-input-box input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            font-size: 0.85rem;
+            flex: 1; padding: 8px; border-radius: 8px;
+            border: 1px solid var(--card-border); background-color: var(--input-bg);
+            color: var(--text-color); font-size: 0.85rem;
         }
         .add-tag-input-box button {
-            padding: 8px 14px;
-            border-radius: 8px;
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
+            padding: 8px 14px; border-radius: 8px; background-color: #3b82f6;
+            color: white; border: none; cursor: pointer; font-weight: 600;
         }
 
-        .modal-content {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .modal-content h2 { margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
-        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
-        .form-group label { font-size: 0.85rem; color: var(--text-secondary); }
-        .form-group input { padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background-color: var(--input-bg); color: var(--text-color); }
         .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-color); font-size: 2rem; cursor: pointer; z-index: 10; }
+
+        .animated-auth-modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh; z-index: 2000;
+            overflow: hidden;
+        }
+
+        .vid-container {
+            position: relative; width: 100vw; height: 100vh; overflow: hidden;
+        }
+
+        .bgvid {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover; z-index: 1;
+        }
+
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(120deg, rgba(30,30,40,0.7) 60%, rgba(0, 89, 255, 0.2) 100%);
+            z-index: 2;
+        }
+
+        .inner-container {
+            position: relative; z-index: 3; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .box {
+            background: rgba(23, 23, 26, 0.82); border-radius: 18px;
+            box-shadow: 0 8px 32px 0 #000a, 0 1.5px 8px 0 #0084ff55;
+            padding: 38px 32px 28px 32px; display: flex; flex-direction: column;
+            align-items: center; min-width: 340px; max-width: 90vw;
+            backdrop-filter: blur(8px); border: 1.5px solid #3f90fa; position: relative;
+        }
+
+        .box h1 { color: #fff; margin-bottom: 22px; font-size: 1.5rem; letter-spacing: 1px; text-align: center; }
+
+        .box input[type="text"], .box input[type="email"], .box input[type="password"] {
+            width: 100%; padding: 12px 14px; margin-bottom: 16px; border: none;
+            border-radius: 8px; background: #232526; color: #fff; font-size: 1rem;
+            outline: none; transition: box-shadow 0.2s, border 0.2s;
+            box-shadow: 0 1px 4px #fd0000; border: 1.5px solid #444;
+        }
+
+        .box input[type="text"]:focus, .box input[type="email"]:focus, .box input[type="password"]:focus {
+            border: 1.5px solid #3f90fa; box-shadow: 0 0 0 2px #3f90fa55;
+        }
+
+        .box button.action-btn {
+            width: 100%; padding: 12px 0;
+            background: linear-gradient(90deg, #3f90fa 60%, #fc0101 100%);
+            color: #232526; border: none; border-radius: 8px; font-size: 1.1rem;
+            font-weight: 600; cursor: pointer; margin-bottom: 12px;
+            transition: background 0.2s, color 0.2s; box-shadow: 0 2px 8px #3f90fa33;
+            letter-spacing: 0.5px;
+        }
+
+        .box button.action-btn:hover {
+            background: linear-gradient(90deg, #3f90fa 0%, #fc0101 100%); color: #fff;
+        }
+
+        .box p { color: #fff; font-size: 1rem; margin: 0; }
+
+        .signup-toggle {
+            color: #3f90fa; cursor: pointer; font-weight: 600; margin-left: 4px;
+            transition: text-decoration 0.2s;
+        }
+
+        .signup-toggle:hover { text-decoration: underline; }
+
+        .close-animated-modal {
+            position: absolute; top: 10px; right: 15px; color: #fff;
+            font-size: 1.8rem; cursor: pointer; z-index: 10;
+        }
+
+        @media (max-width: 600px) {
+            .box { min-width: 90vw; padding: 24px 8vw 18px 8vw; }
+            .box h1 { font-size: 1.1rem; }
+            .liquid-nav { width: 92%; justify-content: space-around; padding: 6px 10px; }
+            .liquid-nav-btn { padding: 6px 10px; font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 Chế độ</button>
         <h1>Kho Hình Nền iPad</h1>
-        <p>Tuyển tập hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
+        <p>Tuyển tập 60 hình nền chất lượng cao thiết kế riêng cho màn hình iPad của bạn.</p>
     </header>
 
-    <div class="auth-bar" id="authBar">
-        <span id="userInfo" style="font-size: 0.95rem; color: #10b981; font-weight: 500; display: none;"></span>
-        <button class="auth-btn" id="btnLoginOpen" onclick="openModal('loginModal')">Đăng nhập</button>
-        <button class="auth-btn" id="btnRegisterOpen" onclick="openModal('registerModal')">Đăng ký</button>
-        <button class="auth-btn logout" id="btnLogout" style="display: none;" onclick="logout()">Đăng xuất</button>
-    </div>
+    <!-- THANH TASKBAR LIQUID NỔI PHÍA DƯỚI MÀN HÌNH -->
+    <nav class="liquid-nav">
+        <button class="liquid-nav-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">🏠 Trang chủ</button>
+        <button class="liquid-nav-btn" onclick="toggleTheme()">☀️ / 🌙 Giao diện</button>
+        <div class="liquid-divider"></div>
+        <span class="user-pill" id="userInfo" style="display: none;"></span>
+        <button class="liquid-nav-btn" id="btnLoginOpen" onclick="openAnimatedAuthModal('login')">Đăng nhập</button>
+        <button class="liquid-nav-btn" id="btnRegisterOpen" onclick="openAnimatedAuthModal('register')">Đăng ký</button>
+        <button class="liquid-nav-btn logout" id="btnLogout" style="display: none;" onclick="logout()">Thoát</button>
+    </nav>
 
     <div class="upload-section">
         <h3>Chia sẻ hình nền mới của bạn</h3>
@@ -474,6 +413,39 @@
     <div class="gallery" id="gallery"></div>
     <div class="pagination" id="pagination"></div>
 
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ VIDEO ANIMATED -->
+    <div class="animated-auth-modal" id="animatedAuthModal">
+        <div class="vid-container">
+            <video id="Video1" class="bgvid back" autoplay muted loop playsinline>
+                <source src="https://v1.pinterest.com/videos/iht/720p/a7/c6/35/a7c6356f7ec443a65aa9cfe6f8549168.mp4" type="video/mp4">
+            </video>
+            <div class="overlay"></div>
+            <div class="inner-container">
+                <div class="box">
+                    <span class="close-animated-modal" onclick="closeAnimatedAuthModal()">&times;</span>
+                    
+                    <div id="loginSection" style="width: 100%;">
+                        <h1>Login</h1>
+                        <input type="text" id="animLoginUser" placeholder="Username" autocomplete="username"/>
+                        <input type="password" id="animLoginPass" placeholder="Password" autocomplete="current-password"/>
+                        <button class="action-btn" onclick="handleAnimLogin()">Login</button>
+                        <p style="text-align: center;">Not a member? <span class="signup-toggle" onclick="switchAuthMode('register')">Sign Up</span></p>
+                    </div>
+
+                    <div id="registerSection" style="width: 100%; display: none;">
+                        <h1>Sign Up</h1>
+                        <input type="text" id="animRegUser" placeholder="Username" autocomplete="username"/>
+                        <input type="email" id="animRegEmail" placeholder="Email" autocomplete="email"/>
+                        <input type="password" id="animRegPass" placeholder="Password" autocomplete="new-password"/>
+                        <button class="action-btn" onclick="handleAnimRegister()">Sign Up</button>
+                        <p style="text-align: center;">Already a member? <span class="signup-toggle" onclick="switchAuthMode('login')">Login</span></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL XEM CHI TIẾT ẢNH & HASHTAG -->
     <div class="modal" id="imageModal" onclick="closeModalOnOutside(event, 'imageModal')">
         <div class="modal-body">
@@ -482,7 +454,6 @@
             <h3 id="modalTitle" style="font-size: 1.1rem; margin-bottom: 10px; text-align: center; color: var(--title-color);"></h3>
             
             <div style="width: 100%; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">Thẻ Hashtag (Bấm để thả/hủy):</div>
-            
             <div class="reaction-tags-container" id="modalReactionContainer"></div>
 
             <div class="add-tag-input-box" id="addTagInputBox">
@@ -492,40 +463,12 @@
         </div>
     </div>
 
-    <!-- MODAL ĐĂNG KÝ -->
-    <div class="modal" id="registerModal" onclick="closeModalOnOutside(event, 'registerModal')">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Đăng ký tài khoản</h2>
-            <form id="registerForm" onsubmit="handleRegister(event)">
-                <div class="form-group"><label>Tên người dùng</label><input type="text" id="regUsername" required></div>
-                <div class="form-group"><label>Email</label><input type="email" id="regEmail" required></div>
-                <div class="form-group"><label>Mật khẩu</label><input type="password" id="regPassword" required></div>
-                <button type="submit" class="submit-btn" style="width: 100%;">Đăng ký</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL ĐĂNG NHẬP -->
-    <div class="modal" id="loginModal" onclick="closeModalOnOutside(event, 'loginModal')">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Đăng nhập</h2>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group"><label>Tên người dùng</label><input type="text" id="loginUsername" required></div>
-                <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" required></div>
-                <button type="submit" class="submit-btn" style="width: 100%;">Đăng nhập</button>
-            </form>
-        </div>
-    </div>
-
     <script>
         let users = JSON.parse(localStorage.getItem('ipad_users')) || [];
         let currentUser = JSON.parse(localStorage.getItem('ipad_current_user')) || null;
         let activeModalWallpaperId = null;
 
-        // Danh sách 30 hình nền tiếng Việt hoàn chỉnh đã tích hợp sẵn hệ thống Tags
-        let wallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers')) || [
+        const defaultWallpapers = [
             { id: 1, title: "Dải màu trừu tượng 01", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: { "oled": {count: 5, users: []}, "4k": {count: 2, users: []} } },
             { id: 2, title: "Đồi núi tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: { "phongcanh": {count: 8, users: []}, "chill": {count: 4, users: []} } },
             { id: 3, title: "Sóng neon huyền ảo", category: "hien-dai", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: { "neon": {count: 7, users: []}, "dark": {count: 9, users: []} } },
@@ -555,8 +498,42 @@
             { id: 27, title: "Ánh đèn đô thị rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [], tags: {} },
             { id: 28, title: "Đụn cát sa mạc", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
             { id: 29, title: "Kết cấu vàng óng ánh", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
-            { id: 30, title: "Góc làm việc ngăn nắp", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} }
+            { id: 30, title: "Góc làm việc ngăn nắp", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
+            { id: 31, title: "Bình minh trên cao nguyên", category: "phong-canh", url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: { "nature": {count: 4, users: []} } },
+            { id: 32, title: "Sóng nước ngọc bích", category: "toi-gian", url: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
+            { id: 33, title: "Cầu vượt đêm rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: { "night": {count: 3, users: []} } },
+            { id: 34, title: "Mảnh ghép hình học", category: "truu-tuong", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 35, title: "Rừng lá đỏ mùa thu", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} },
+            { id: 36, title: "Đường chân trời tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
+            { id: 37, title: "Tàu điện xuyên đêm", category: "hien-dai", url: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
+            { id: 38, title: "Mặt hồ phẳng lặng", category: "phong-canh", url: "https://images.unsplash.com/photo-1439853949127-fa647821eba0?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
+            { id: 39, title: "Đèn LED nghệ thuật", category: "truu-tuong", url: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
+            { id: 40, title: "Không gian xám kem", category: "toi-gian", url: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
+            { id: 41, title: "Tòa nhà chọc trời", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
+            { id: 42, title: "Thác nước trong rừng", category: "phong-canh", url: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [], tags: {} },
+            { id: 43, title: "Vòng xoáy đa sắc", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
+            { id: 44, title: "Mặt trăng khuyết", category: "toi-gian", url: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?auto=format&fit=crop&w=1200&q=80", likes: 15, likedBy: [], tags: {} },
+            { id: 45, title: "Phố cổ lên đèn", category: "hien-dai", url: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
+            { id: 46, title: "Đảo nhỏ giữa đại dương", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 47, title: "Thủy tinh phản quang", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
+            { id: 48, title: "Tuyết rơi lặng lẽ", category: "toi-gian", url: "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
+            { id: 49, title: "Siêu xe trong đêm", category: "hien-dai", url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80", likes: 16, likedBy: [], tags: {} },
+            { id: 50, title: "Cánh đồng hoa lavender", category: "phong-canh", url: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
+            { id: 51, title: "Bọt nước siêu mịn", category: "truu-tuong", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
+            { id: 52, title: "Đường kẻ đơn sắc", category: "toi-gian", url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
+            { id: 53, title: "Cầu Cổng Vàng sương mù", category: "hien-dai", url: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
+            { id: 54, title: "Rạn hoa san hô", category: "phong-canh", url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
+            { id: 55, title: "Sóng âm kỹ thuật số", category: "truu-tuong", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
+            { id: 56, title: "Cửa sổ ngày mưa", category: "toi-gian", url: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: {} },
+            { id: 57, title: "Thành phố góc nhìn không giàn", category: "hien-dai", url: "https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
+            { id: 58, title: "Hẻm núi Grand Canyon", category: "phong-canh", url: "https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
+            { id: 59, title: "Năng lượng Plasma", category: "truu-tuong", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 60, title: "Tách cà phê sáng", category: "toi-gian", url: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} }
         ];
+
+        let storedWallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers'));
+        let wallpapers = (!storedWallpapers || storedWallpapers.length < 60) ? defaultWallpapers : storedWallpapers;
+        localStorage.setItem('ipad_wallpapers', JSON.stringify(wallpapers));
 
         let currentCategory = 'all';
         let currentSort = 'latest';
@@ -581,8 +558,8 @@
             const btnLogout = document.getElementById('btnLogout');
 
             if (currentUser) {
-                userInfoEl.textContent = `Xin chào, ${currentUser.username}`;
-                userInfoEl.style.display = 'inline';
+                userInfoEl.textContent = `👤 ${currentUser.username}`;
+                userInfoEl.style.display = 'inline-block';
                 btnLoginOpen.style.display = 'none';
                 btnRegisterOpen.style.display = 'none';
                 btnLogout.style.display = 'inline-block';
@@ -594,11 +571,58 @@
             }
         }
 
-        function handleRegister(e) {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value;
+        function openAnimatedAuthModal(mode) {
+            switchAuthMode(mode);
+            document.getElementById('animatedAuthModal').style.display = 'block';
+        }
+
+        function closeAnimatedAuthModal() {
+            document.getElementById('animatedAuthModal').style.display = 'none';
+        }
+
+        function switchAuthMode(mode) {
+            const loginSec = document.getElementById('loginSection');
+            const regSec = document.getElementById('registerSection');
+            if (mode === 'register') {
+                loginSec.style.display = 'none';
+                regSec.style.display = 'block';
+            } else {
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+            }
+        }
+
+        function handleAnimLogin() {
+            const username = document.getElementById('animLoginUser').value.trim();
+            const password = document.getElementById('animLoginPass').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!');
+                return;
+            }
+
+            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+            if (!user) {
+                alert('Tài khoản hoặc mật khẩu không chính xác!');
+                return;
+            }
+
+            currentUser = user;
+            localStorage.setItem('ipad_current_user', JSON.stringify(currentUser));
+            closeAnimatedAuthModal();
+            updateAuthUI();
+            renderGallery();
+        }
+
+        function handleAnimRegister() {
+            const username = document.getElementById('animRegUser').value.trim();
+            const email = document.getElementById('animRegEmail').value.trim();
+            const password = document.getElementById('animRegPass').value;
+
+            if (!username || !email || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
 
             if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
                 alert('Tên người dùng đã tồn tại!');
@@ -607,27 +631,8 @@
 
             users.push({ username, email, password });
             localStorage.setItem('ipad_users', JSON.stringify(users));
-            alert('Đăng ký thành công!');
-            closeModal('registerModal');
-            openModal('loginModal');
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
-            if (!user) {
-                alert('Sai tài khoản hoặc mật khẩu!');
-                return;
-            }
-
-            currentUser = user;
-            localStorage.setItem('ipad_current_user', JSON.stringify(currentUser));
-            closeModal('loginModal');
-            updateAuthUI();
-            renderGallery();
+            alert('Đăng ký tài khoản thành công! Vui lòng đăng nhập.');
+            switchAuthMode('login');
         }
 
         function logout() {
@@ -695,7 +700,6 @@
                 if (!wp.tags) wp.tags = {};
                 const isLiked = currentUser && wp.likedBy.includes(currentUser.username);
 
-                // Lấy ra tối đa 2 loại hashtag được thêm nhiều nhất
                 let sortedTags = Object.entries(wp.tags).sort((a, b) => b[1].count - a[1].count).slice(0, 2);
 
                 let tagsHtml = '';
@@ -773,7 +777,6 @@
                 container.appendChild(tagEl);
             });
 
-            // Nút bấm # để mở ô nhập thêm hashtag
             const addTrigger = document.createElement('div');
             addTrigger.className = 'add-tag-trigger';
             addTrigger.innerHTML = '#';
@@ -788,7 +791,7 @@
         function toggleTagReaction(wallpaperId, tagName) {
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để tương tác hashtag!');
-                openModal('loginModal');
+                openAnimatedAuthModal('login');
                 return;
             }
 
@@ -798,14 +801,12 @@
                 let userIndex = wp.tags[tagName].users.indexOf(currentUser.username);
 
                 if (userIndex > -1) {
-                    // Đã ấn rồi -> Bấm lại để hủy (trừ 1)
                     wp.tags[tagName].users.splice(userIndex, 1);
                     wp.tags[tagName].count -= 1;
                     if (wp.tags[tagName].count <= 0) {
                         delete wp.tags[tagName];
                     }
                 } else {
-                    // Chưa ấn -> Thêm (cộng 1). Mỗi tài khoản chỉ được ấn 1 lần
                     wp.tags[tagName].users.push(currentUser.username);
                     wp.tags[tagName].count += 1;
                 }
@@ -816,7 +817,7 @@
         function submitNewTag() {
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để thêm hashtag!');
-                openModal('loginModal');
+                openAnimatedAuthModal('login');
                 return;
             }
 
@@ -850,7 +851,7 @@
             event.stopPropagation();
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để thả tim!');
-                openModal('loginModal');
+                openAnimatedAuthModal('login');
                 return;
             }
 
@@ -874,7 +875,7 @@
             e.preventDefault();
             if (!currentUser) {
                 alert('Vui lòng đăng nhập để đăng ảnh!');
-                openModal('loginModal');
+                openAnimatedAuthModal('login');
                 return;
             }
 
