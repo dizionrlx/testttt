@@ -106,10 +106,7 @@
             text-align: center;
         }
 
-        .upload-section h3 {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
+        .upload-section h3 { margin-bottom: 15px; font-size: 1.2rem; }
 
         .upload-form {
             display: flex;
@@ -210,16 +207,20 @@
 
         .wallpaper-card img {
             width: 100%;
-            height: 340px;
+            height: 300px;
             object-fit: cover;
             display: block;
         }
 
         .wallpaper-info {
             padding: 12px 15px;
+        }
+
+        .card-header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 8px;
         }
 
         .wallpaper-title {
@@ -262,6 +263,23 @@
             text-decoration: none;
         }
 
+        /* Hiển thị tối đa 2 hashtag ở card ngoài */
+        .preview-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            min-height: 22px;
+        }
+
+        .mini-tag {
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -285,6 +303,7 @@
             border-color: #3b82f6;
         }
 
+        /* Modal Chi Tiết Ảnh */
         .modal {
             display: none;
             position: fixed;
@@ -297,10 +316,98 @@
             padding: 20px;
         }
 
-        .modal img.preview-img {
-            max-width: 90%;
-            max-height: 90vh;
+        .modal-body {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .modal-body img.preview-img {
+            width: 100%;
+            max-height: 50vh;
+            object-fit: contain;
             border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* Khu vực hiển thị hashtag dạng reaction */
+        .reaction-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .reaction-tag {
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .reaction-tag:hover { border-color: #3b82f6; }
+        .reaction-tag.reacted {
+            background-color: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .add-tag-trigger {
+            background-color: var(--input-bg);
+            border: 1px dashed var(--card-border);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .add-tag-trigger:hover { color: var(--text-color); border-color: var(--text-secondary); }
+
+        .add-tag-input-box {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            gap: 8px;
+        }
+        .add-tag-input-box input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 0.85rem;
+        }
+        .add-tag-input-box button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
         }
 
         .modal-content {
@@ -316,7 +423,7 @@
         .form-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
         .form-group label { font-size: 0.85rem; color: var(--text-secondary); }
         .form-group input { padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background-color: var(--input-bg); color: var(--text-color); }
-        .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-color); font-size: 2rem; cursor: pointer; }
+        .close-modal { position: absolute; top: 15px; right: 20px; color: var(--text-color); font-size: 2rem; cursor: pointer; z-index: 10; }
     </style>
 </head>
 <body>
@@ -349,7 +456,6 @@
         </form>
     </div>
 
-    <!-- KHU VỰC BỘ LỌC DANH MỤC VÀ SẮP XẾP -->
     <div class="filter-sort-bar">
         <div class="category-filters">
             <button class="filter-btn active" onclick="filterCategory('all', this)">Tất cả</button>
@@ -368,14 +474,26 @@
     <div class="gallery" id="gallery"></div>
     <div class="pagination" id="pagination"></div>
 
-    <!-- MODAL XEM ẢNH -->
-    <div class="modal" id="imageModal" onclick="closeModal('imageModal')">
-        <span class="close-modal">&times;</span>
-        <img class="preview-img" id="modalImg" src="" alt="Full Wallpaper">
+    <!-- MODAL XEM CHI TIẾT ẢNH & HASHTAG -->
+    <div class="modal" id="imageModal" onclick="closeModalOnOutside(event, 'imageModal')">
+        <div class="modal-body">
+            <span class="close-modal" onclick="closeModal('imageModal')">&times;</span>
+            <img class="preview-img" id="modalImg" src="" alt="Full Wallpaper">
+            <h3 id="modalTitle" style="font-size: 1.1rem; margin-bottom: 10px; text-align: center; color: var(--title-color);"></h3>
+            
+            <div style="width: 100%; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">Thẻ Hashtag (Bấm để thả/hủy):</div>
+            
+            <div class="reaction-tags-container" id="modalReactionContainer"></div>
+
+            <div class="add-tag-input-box" id="addTagInputBox">
+                <input type="text" id="newTagInput" placeholder="Nhập tên hashtag (VD: #4k, #chill)...">
+                <button onclick="submitNewTag()">Thêm</button>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL ĐĂNG KÝ -->
-    <div class="modal" id="registerModal">
+    <div class="modal" id="registerModal" onclick="closeModalOnOutside(event, 'registerModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
             <h2>Đăng ký tài khoản</h2>
@@ -389,7 +507,7 @@
     </div>
 
     <!-- MODAL ĐĂNG NHẬP -->
-    <div class="modal" id="loginModal">
+    <div class="modal" id="loginModal" onclick="closeModalOnOutside(event, 'loginModal')">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
             <h2>Đăng nhập</h2>
@@ -404,39 +522,40 @@
     <script>
         let users = JSON.parse(localStorage.getItem('ipad_users')) || [];
         let currentUser = JSON.parse(localStorage.getItem('ipad_current_user')) || null;
+        let activeModalWallpaperId = null;
 
-        // 30 Ảnh nền với tên hoàn toàn bằng tiếng Việt
+        // Danh sách 30 hình nền tiếng Việt hoàn chỉnh đã tích hợp sẵn hệ thống Tags
         let wallpapers = JSON.parse(localStorage.getItem('ipad_wallpapers')) || [
-            { id: 1, title: "Dải màu trừu tượng 01", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [] },
-            { id: 2, title: "Đồi núi tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [] },
-            { id: 3, title: "Sóng neon huyền ảo", category: "hien-dai", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [] },
-            { id: 4, title: "Tinh vân vũ trụ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [] },
-            { id: 5, title: "Đường nét kiến trúc", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [] },
-            { id: 6, title: "Hoàng hôn trên biển", category: "phong-canh", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [] },
-            { id: 7, title: "Nghệ thuật 3D uốn lượn", category: "truu-tuong", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [] },
-            { id: 8, title: "Rừng thông sương mù", category: "phong-canh", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [] },
-            { id: 9, title: "Thành phố Cyberpunk", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [] },
-            { id: 10, title: "Giấc mơ pastel nhẹ nhàng", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [] },
-            { id: 11, title: "Đỉnh núi tuyết Alps", category: "phong-canh", url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [] },
-            { id: 12, title: "Đại dương xanh thẳm", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [] },
-            { id: 13, title: "Lưới neon tương lai", category: "hien-dai", url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [] },
-            { id: 14, title: "Kiến trúc kính hiện đại", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 1, likedBy: [] },
-            { id: 15, title: "Hào quang dải ngân hà", category: "truu-tuong", url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80", likes: 15, likedBy: [] },
-            { id: 16, title: "Khói màu nghệ thuật", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [] },
-            { id: 17, title: "Bức tường trắng tinh khôi", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [] },
-            { id: 18, title: "Bóng lá đơn độc", category: "toi-gian", url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [] },
-            { id: 19, title: "Con đường mùa thu vàng", category: "phong-canh", url: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [] },
-            { id: 20, title: "Bầu trời đầy sao đêm", category: "phong-canh", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [] },
-            { id: 21, title: "Sóng không gian ảo", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [] },
-            { id: 22, title: "Tông màu tối tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [] },
-            { id: 23, title: "Văn phòng kính sang trọng", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [] },
-            { id: 24, title: "Cây xanh nhiệt đới", category: "phong-canh", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [] },
-            { id: 25, title: "Sơn dầu loang lổ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [] },
-            { id: 26, title: "Bê tông xám dịu mắt", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [] },
-            { id: 27, title: "Ánh đèn đô thị rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [] },
-            { id: 28, title: "Đụn cát sa mạc", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [] },
-            { id: 29, title: "Kết cấu vàng óng ánh", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [] },
-            { id: 30, title: "Góc làm việc ngăn nắp", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [] }
+            { id: 1, title: "Dải màu trừu tượng 01", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: { "oled": {count: 5, users: []}, "4k": {count: 2, users: []} } },
+            { id: 2, title: "Đồi núi tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: { "phongcanh": {count: 8, users: []}, "chill": {count: 4, users: []} } },
+            { id: 3, title: "Sóng neon huyền ảo", category: "hien-dai", url: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: { "neon": {count: 7, users: []}, "dark": {count: 9, users: []} } },
+            { id: 4, title: "Tinh vân vũ trụ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: { "vutu": {count: 15, users: []} } },
+            { id: 5, title: "Đường nét kiến trúc", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
+            { id: 6, title: "Hoàng hôn trên biển", category: "phong-canh", url: "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: { "hoanghon": {count: 6, users: []} } },
+            { id: 7, title: "Nghệ thuật 3D uốn lượn", category: "truu-tuong", url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
+            { id: 8, title: "Rừng thông sương mù", category: "phong-canh", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: { "nature": {count: 5, users: []} } },
+            { id: 9, title: "Thành phố Cyberpunk", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 10, title: "Giấc mơ pastel nhẹ nhàng", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
+            { id: 11, title: "Đỉnh núi tuyết Alps", category: "phong-canh", url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
+            { id: 12, title: "Đại dương xanh thẳm", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 12, likedBy: [], tags: {} },
+            { id: 13, title: "Lưới neon tương lai", category: "hien-dai", url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
+            { id: 14, title: "Kiến trúc kính hiện đại", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 1, likedBy: [], tags: {} },
+            { id: 15, title: "Hào quang dải ngân hà", category: "truu-tuong", url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80", likes: 15, likedBy: [], tags: {} },
+            { id: 16, title: "Khói màu nghệ thuật", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
+            { id: 17, title: "Bức tường trắng tinh khôi", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 2, likedBy: [], tags: {} },
+            { id: 18, title: "Bóng lá đơn độc", category: "toi-gian", url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 19, title: "Con đường mùa thu vàng", category: "phong-canh", url: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} },
+            { id: 20, title: "Bầu trời đầy sao đêm", category: "phong-canh", url: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=1200&q=80", likes: 14, likedBy: [], tags: {} },
+            { id: 21, title: "Sóng không gian ảo", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 5, likedBy: [], tags: {} },
+            { id: 22, title: "Tông màu tối tối giản", category: "toi-gian", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 7, likedBy: [], tags: {} },
+            { id: 23, title: "Văn phòng kính sang trọng", category: "hien-dai", url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", likes: 3, likedBy: [], tags: {} },
+            { id: 24, title: "Cây xanh nhiệt đới", category: "phong-canh", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 10, likedBy: [], tags: {} },
+            { id: 25, title: "Sơn dầu loang lổ", category: "truu-tuong", url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1200&q=80", likes: 6, likedBy: [], tags: {} },
+            { id: 26, title: "Bê tông xám dịu mắt", category: "toi-gian", url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80", likes: 4, likedBy: [], tags: {} },
+            { id: 27, title: "Ánh đèn đô thị rực rỡ", category: "hien-dai", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1200&q=80", likes: 13, likedBy: [], tags: {} },
+            { id: 28, title: "Đụn cát sa mạc", category: "phong-canh", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", likes: 8, likedBy: [], tags: {} },
+            { id: 29, title: "Kết cấu vàng óng ánh", category: "truu-tuong", url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80", likes: 11, likedBy: [], tags: {} },
+            { id: 30, title: "Góc làm việc ngăn nắp", category: "toi-gian", url: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1200&q=80", likes: 9, likedBy: [], tags: {} }
         ];
 
         let currentCategory = 'all';
@@ -520,6 +639,9 @@
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function closeModalOnOutside(event, id) {
+            if (event.target.id === id) closeModal(id);
+        }
 
         function filterCategory(category, btn) {
             currentCategory = category;
@@ -538,6 +660,9 @@
         function saveDataAndRender() {
             localStorage.setItem('ipad_wallpapers', JSON.stringify(wallpapers));
             renderGallery();
+            if (activeModalWallpaperId !== null) {
+                openImageModal(activeModalWallpaperId);
+            }
         }
 
         function renderGallery() {
@@ -567,26 +692,37 @@
 
             paginatedList.forEach((wp) => {
                 if (!wp.likedBy) wp.likedBy = [];
+                if (!wp.tags) wp.tags = {};
                 const isLiked = currentUser && wp.likedBy.includes(currentUser.username);
+
+                // Lấy ra tối đa 2 loại hashtag được thêm nhiều nhất
+                let sortedTags = Object.entries(wp.tags).sort((a, b) => b[1].count - a[1].count).slice(0, 2);
+
+                let tagsHtml = '';
+                sortedTags.forEach(([tagName, tagData]) => {
+                    tagsHtml += `<span class="mini-tag">#${tagName} (${tagData.count})</span>`;
+                });
 
                 const card = document.createElement('div');
                 card.className = 'wallpaper-card';
                 card.innerHTML = `
                     <img src="${wp.url}" alt="${wp.title}" loading="lazy">
                     <div class="wallpaper-info">
-                        <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
-                        <div class="actions">
-                            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${wp.id}, event)">
-                                ${isLiked ? '❤️' : '🤍'} ${wp.likes}
-                            </button>
-                            <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                        <div class="card-header-row">
+                            <span class="wallpaper-title" title="${wp.title}">${wp.title}</span>
+                            <div class="actions">
+                                <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${wp.id}, event)">
+                                    ${isLiked ? '❤️' : '🤍'} ${wp.likes}
+                                </button>
+                                <a href="${wp.url}" target="_blank" download class="download-btn" onclick="event.stopPropagation()">Tải về</a>
+                            </div>
                         </div>
+                        <div class="preview-tags">${tagsHtml}</div>
                     </div>
                 `;
 
                 card.addEventListener('click', () => {
-                    document.getElementById('modalImg').src = wp.url;
-                    openModal('imageModal');
+                    openImageModal(wp.id);
                 });
 
                 galleryEl.appendChild(card);
@@ -602,6 +738,111 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 };
                 paginationEl.appendChild(pageBtn);
+            }
+        }
+
+        function openImageModal(id) {
+            activeModalWallpaperId = id;
+            const wp = wallpapers.find(item => item.id === id);
+            if (!wp) return;
+
+            document.getElementById('modalImg').src = wp.url;
+            document.getElementById('modalTitle').textContent = wp.title;
+            
+            renderModalReactionTags(wp);
+            document.getElementById('addTagInputBox').style.display = 'none';
+            openModal('imageModal');
+        }
+
+        function renderModalReactionTags(wp) {
+            const container = document.getElementById('modalReactionContainer');
+            container.innerHTML = '';
+
+            if (!wp.tags) wp.tags = {};
+
+            let sortedTags = Object.entries(wp.tags).sort((a, b) => b[1].count - a[1].count);
+
+            sortedTags.forEach(([tagName, tagData]) => {
+                if (!tagData.users) tagData.users = [];
+                const hasReacted = currentUser && tagData.users.includes(currentUser.username);
+
+                const tagEl = document.createElement('div');
+                tagEl.className = `reaction-tag ${hasReacted ? 'reacted' : ''}`;
+                tagEl.innerHTML = `#${tagName} <span>${tagData.count}</span>`;
+                tagEl.onclick = () => toggleTagReaction(wp.id, tagName);
+                container.appendChild(tagEl);
+            });
+
+            // Nút bấm # để mở ô nhập thêm hashtag
+            const addTrigger = document.createElement('div');
+            addTrigger.className = 'add-tag-trigger';
+            addTrigger.innerHTML = '#';
+            addTrigger.title = 'Thêm hashtag mới';
+            addTrigger.onclick = () => {
+                const box = document.getElementById('addTagInputBox');
+                box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+            };
+            container.appendChild(addTrigger);
+        }
+
+        function toggleTagReaction(wallpaperId, tagName) {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để tương tác hashtag!');
+                openModal('loginModal');
+                return;
+            }
+
+            const wp = wallpapers.find(item => item.id === wallpaperId);
+            if (wp && wp.tags[tagName]) {
+                if (!wp.tags[tagName].users) wp.tags[tagName].users = [];
+                let userIndex = wp.tags[tagName].users.indexOf(currentUser.username);
+
+                if (userIndex > -1) {
+                    // Đã ấn rồi -> Bấm lại để hủy (trừ 1)
+                    wp.tags[tagName].users.splice(userIndex, 1);
+                    wp.tags[tagName].count -= 1;
+                    if (wp.tags[tagName].count <= 0) {
+                        delete wp.tags[tagName];
+                    }
+                } else {
+                    // Chưa ấn -> Thêm (cộng 1). Mỗi tài khoản chỉ được ấn 1 lần
+                    wp.tags[tagName].users.push(currentUser.username);
+                    wp.tags[tagName].count += 1;
+                }
+                saveDataAndRender();
+            }
+        }
+
+        function submitNewTag() {
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để thêm hashtag!');
+                openModal('loginModal');
+                return;
+            }
+
+            let inputVal = document.getElementById('newTagInput').value.trim().toLowerCase();
+            inputVal = inputVal.replace(/^#/, '');
+
+            if (!inputVal) {
+                alert('Vui lòng nhập tên hashtag hợp lệ!');
+                return;
+            }
+
+            const wp = wallpapers.find(item => item.id === activeModalWallpaperId);
+            if (wp) {
+                if (!wp.tags) wp.tags = {};
+
+                if (wp.tags[inputVal]) {
+                    toggleTagReaction(wp.id, inputVal);
+                } else {
+                    wp.tags[inputVal] = {
+                        count: 1,
+                        users: [currentUser.username]
+                    };
+                    saveDataAndRender();
+                }
+                document.getElementById('newTagInput').value = '';
+                document.getElementById('addTagInputBox').style.display = 'none';
             }
         }
 
@@ -650,7 +891,8 @@
                         category,
                         url: e.target.result,
                         likes: 0,
-                        likedBy: []
+                        likedBy: [],
+                        tags: { "ipad": {count: 1, users: [currentUser.username]} }
                     });
                     saveDataAndRender();
                     document.getElementById('uploadForm').reset();
